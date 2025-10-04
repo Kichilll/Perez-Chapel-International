@@ -38,6 +38,19 @@
         .hero-gradient {
             background: linear-gradient(135deg, rgba(8,47,84,0.9) 0%, rgba(170,104,1,0.8) 100%);
         }
+        /* Responsive helpers */
+        .logo { max-width: 160px; height: auto; }
+        .hero-section { min-height: 60vh; }
+        .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        /* Mobile nav helper: Tailwind utilities can't be toggled from CSS alone so keep a small helper class */
+        .mobile-links { display: none; }
+        .mobile-links.open { display: block; }
+    /* slide-down animation for mobile menu */
+    .mobile-menu { transform-origin: top; transition: transform 300ms cubic-bezier(.2,.9,.2,1), opacity 200ms ease; }
+    .mobile-menu.hidden { transform: scaleY(0); opacity: 0; }
+    .mobile-menu.open { transform: scaleY(1); opacity: 1; }
+    /* body lock when menu open */
+    .no-scroll { overflow: hidden; height: 100%; }
         .service-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -55,32 +68,54 @@
         <div class="container mx-auto px-6 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="https://huggingface.co/spaces/lisajonsong/divine-digital-chapel-dynamo/resolve/main/images/LOGO-01.svg" alt="Perez Chapel Logo" class="w-4xl h-12 mr-3">
+                    <img src="https://huggingface.co/spaces/lisajonsong/divine-digital-chapel-dynamo/resolve/main/images/LOGO-01.svg" alt="Perez Chapel Logo" class="logo mr-3">
 <span class="font-heading text-xl font-bold">Perez Chapel <br> International </span>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8">
+                <!-- Desktop links -->
+                <div id="nav-links" class="hidden md:flex items-center space-x-8">
                     <a href="#" class="hover:text-pci-accent transition-colors">Home</a>
                     <a href="#" class="hover:text-pci-accent transition-colors">About</a>
                     <a href="#" class="hover:text-pci-accent transition-colors">Ministries</a>
                     <a href="#" class="hover:text-pci-accent transition-colors">Events</a>
                     <a href="#" class="hover:text-pci-accent transition-colors">Media</a>
-                    <a href="#" class="bg-pci-accent text-pci-text px-4 py-2 rounded-full hover:bg-pci-accent-dark transition-colors">
-Give Online
-                    </a>
+                    <a href="#" class="bg-pci-accent text-pci-text px-4 py-2 rounded-full hover:bg-pci-accent-dark transition-colors">Give Online</a>
                 </div>
-                
-                <button class="md:hidden focus:outline-none">
+
+                <!-- Mobile toggle -->
+                <button id="nav-toggle" class="md:hidden focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i data-feather="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
     </nav>
+    <!-- Mobile Menu (hidden on md+) -->
+    <div id="mobile-menu" class="mobile-menu hidden bg-pci-primary text-white md:hidden">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="https://huggingface.co/spaces/lisajonsong/divine-digital-chapel-dynamo/resolve/main/images/LOGO-01.svg" alt="Perez Chapel" class="logo mr-3">
+                    <span class="font-heading text-lg font-bold">Perez Chapel</span>
+                </div>
+                <button id="nav-close" class="focus:outline-none" aria-label="Close menu">
+                    <i data-feather="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <nav class="mt-4 space-y-3">
+                <a href="#" class="block px-3 py-2 rounded hover:bg-pci-primary-light">Home</a>
+                <a href="#" class="block px-3 py-2 rounded hover:bg-pci-primary-light">About</a>
+                <a href="#" class="block px-3 py-2 rounded hover:bg-pci-primary-light">Ministries</a>
+                <a href="#" class="block px-3 py-2 rounded hover:bg-pci-primary-light">Events</a>
+                <a href="#" class="block px-3 py-2 rounded hover:bg-pci-primary-light">Media</a>
+                <a href="#" class="block px-3 py-2 rounded bg-pci-accent text-pci-text text-center">Give Online</a>
+            </nav>
+        </div>
+    </div>
     <!-- Hero Section -->
-    <section class="relative text-white">
-        <div class="absolute inset-0 bg-black opacity-40"></div>
-        <img src="https://enzostvs-deepsite.hf.space/_next/image?url=https%3A%2F%2Fhuggingface.co%2Fspaces%2Flisajonsong%2Fdivine-digital-chapel-dynamo%2Fresolve%2Fmain%2Fimages%2Fcarousel.jpg&w=1200&q=75" alt="Worship Service" class="w-full h-full object-cover">
-        <div class="container mx-auto px-6 py-32 relative z-10">
+    <section class="relative text-white hero-section">
+        <img src="https://enzostvs-deepsite.hf.space/_next/image?url=https%3A%2F%2Fhuggingface.co%2Fspaces%2Flisajonsong%2Fdivine-digital-chapel-dynamo%2Fresolve%2Fmain%2Fimages%2Fcarousel.jpg&w=1200&q=75" alt="Worship Service" class="hero-img z-0">
+        <div class="absolute inset-0 bg-black opacity-40 z-10"></div>
+        <div class="container mx-auto px-6 py-24 relative z-20">
 <div class="max-w-2xl">
                 <h1 class="font-heading text-4xl md:text-6xl font-bold mb-6 leading-tight">
                     Experience God's Presence in Worship
@@ -88,11 +123,11 @@ Give Online
                 <p class="text-xl mb-8">
                     Join us this Sunday as we lift up the name of Jesus together
                 </p>
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="#" class="bg-pci-accent text-pci-text px-8 py-3 rounded-full font-bold hover:bg-pci-accent-dark transition-colors text-center">
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 hero-buttons">
+                    <a href="#" class="bg-pci-accent text-pci-text px-6 py-3 rounded-full font-bold hover:bg-pci-accent-dark transition-colors text-center w-full sm:w-auto">
 Service Times
                     </a>
-                    <a href="#" class="bg-transparent border-2 border-pci-accent text-pci-text-light px-8 py-3 rounded-full font-bold hover:bg-pci-accent hover:text-pci-text transition-colors text-center">
+                    <a href="#" class="bg-transparent border-2 border-pci-accent text-pci-text-light px-6 py-3 rounded-full font-bold hover:bg-pci-accent hover:text-pci-text transition-colors text-center w-full sm:w-auto">
 Watch Live
                     </a>
                 </div>
@@ -280,9 +315,7 @@ Subscribe
             <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 bg-pci-accent rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">
-                            ✝
-                        </div>
+                        <img src="https://huggingface.co/spaces/lisajonsong/divine-digital-chapel-dynamo/resolve/main/images/LOGO-01.svg" alt="Perez Chapel Logo" class="logo w-10 h-10 mr-3">
                         <span class="font-heading text-xl font-bold">Perez Chapel</span>
                     </div>
                     <p class="mb-4">105 Olusegun Obasanjo Way, Dzorwulu, Accra</p>
@@ -347,15 +380,66 @@ Subscribe
         
         // Mobile menu toggle functionality
         document.querySelector('nav button').addEventListener('click', function() {
-            const menu = document.querySelector('nav .hidden');
+            const menu = document.getElementById('nav-links');
+            const expanded = this.getAttribute('aria-expanded') === 'true';
             if (menu.classList.contains('hidden')) {
                 menu.classList.remove('hidden');
-                menu.classList.add('block');
+                // on small screens show as block / column
+                menu.classList.add('flex');
+                menu.classList.add('flex-col');
+                this.setAttribute('aria-expanded', 'true');
             } else {
                 menu.classList.add('hidden');
-                menu.classList.remove('block');
+                menu.classList.remove('flex');
+                menu.classList.remove('flex-col');
+                this.setAttribute('aria-expanded', 'false');
             }
         });
+            // Mobile menu open/close with animation and body scroll lock
+            (function() {
+                const toggle = document.getElementById('nav-toggle');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const closeBtn = document.getElementById('nav-close');
+                const body = document.body;
+
+                function openMenu() {
+                    mobileMenu.classList.remove('hidden');
+                    // force reflow then open for transition
+                    void mobileMenu.offsetWidth;
+                    mobileMenu.classList.add('open');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    body.classList.add('no-scroll');
+                }
+
+                function closeMenu() {
+                    mobileMenu.classList.remove('open');
+                    mobileMenu.classList.add('hidden');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    body.classList.remove('no-scroll');
+                }
+
+                toggle.addEventListener('click', function() {
+                    const expanded = this.getAttribute('aria-expanded') === 'true';
+                    if (expanded) closeMenu(); else openMenu();
+                });
+
+                if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+
+                // Close on Escape
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+                        closeMenu();
+                        toggle.focus();
+                    }
+                });
+
+                // Close when clicking outside the menu content on small screens
+                document.addEventListener('click', function(e) {
+                    if (!mobileMenu.contains(e.target) && !toggle.contains(e.target) && toggle.getAttribute('aria-expanded') === 'true') {
+                        closeMenu();
+                    }
+                });
+            })();
     </script>
 </body>
 </html>
